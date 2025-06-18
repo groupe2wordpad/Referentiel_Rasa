@@ -12,11 +12,11 @@ USER root
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
-# Étape 5 : Entraîner le modèle (toujours en root ici pour éviter les erreurs)
-#RUN rasa train
+# Étape 5 : (optionnel) Entraîner le modèle au build
+# RUN rasa train
 
 # Étape 6 : Revenir à l’utilisateur non-root utilisé par Rasa
 USER 1001
 
-# Étape 7 : Lancer le serveur Rasa avec l’API activée
-CMD ["run", "--enable-api", "--cors", "*", "--debug"]
+# Étape 7 : Lancer le serveur Rasa avec le bon port pour Render
+CMD ["run", "--enable-api", "--cors", "*", "--debug", "--port", "5000"]
