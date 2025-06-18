@@ -8,15 +8,15 @@ WORKDIR /app
 COPY . /app
 
 # Étape 4 : Installer les dépendances Python avec les bons droits
-# On passe temporairement en root pour éviter les erreurs de permission
 USER root
 RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
-# Revenir à l’utilisateur non-root utilisé par Rasa
-USER 1001
 
-# Étape 5 : Entraîner le modèle
+# Étape 5 : Entraîner le modèle (toujours en root ici pour éviter les erreurs)
 RUN rasa train
 
-# Étape 6 : Lancer le serveur Rasa avec l’API activée
+# Étape 6 : Revenir à l’utilisateur non-root utilisé par Rasa
+USER 1001
+
+# Étape 7 : Lancer le serveur Rasa avec l’API activée
 CMD ["run", "--enable-api", "--cors", "*", "--debug"]
