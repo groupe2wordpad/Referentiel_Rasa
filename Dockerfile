@@ -1,18 +1,22 @@
 # Étape 1 : image officielle Rasa
 FROM rasa/rasa:3.6.8
 
-# Étape 2 : Crée le dossier de travail
+# Étape 2 : Dossier de travail
 WORKDIR /app
 
-# Étape 3 : Copie tous les fichiers du projet dans l'image
+# Étape 3 : Copie tous les fichiers dans le conteneur
 COPY . /app
 
-# Étape 4 : Installation de dépendances custom (optionnel)
-# Ex: si tu as des packages dans requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+# Étape 4 : Installer les dépendances Python avec les bons droits
+# On passe temporairement en root pour éviter les erreurs de permission
+USER root
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+# Revenir à l’utilisateur non-root utilisé par Rasa
+USER 1001
 
-# Étape 5 : Entraîne le modèle (optionnel si tu veux l'entraîner ailleurs)
+# Étape 5 : Entraîner le modèle
 RUN rasa train
 
-# Étape 6 : Lance le serveur Rasa avec l’API activée
+# Étape 6 : Lancer le serveur Rasa avec l’API activée
 CMD ["run", "--enable-api", "--cors", "*", "--debug"]
