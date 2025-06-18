@@ -13,7 +13,7 @@ RUN pip install --no-cache-dir --upgrade pip && \
     pip install --no-cache-dir -r requirements.txt
 
 # Étape 5 : Entraîner le modèle (toujours en root ici pour éviter les erreurs)
-RUN rasa train
+#RUN rasa train
 
 # Étape 6 : Revenir à l’utilisateur non-root utilisé par Rasa
 USER 1001
