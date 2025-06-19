@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: rasa-server
+    env: docker
+    plan: free
+    branch: main
+    repo: https://github.com/groupe2wordpad/Referentiel_Rasa
+    dockerfilePath: Dockerfile
+    envVars:
+      - key: PORT
+        value: 5005
+
+  - type: web
+    name: action-server
+    env: docker
+    plan: free
+    repo: https://github.com/groupe2wordpad/Referentiel_Rasa
+    dockerfilePath: action_server.Dockerfile
+    envVars:
+      - key: PORT
+        value: 5055
